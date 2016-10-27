@@ -456,7 +456,7 @@ create_server = function(
 # XXX XXX parse for valid connection headers to finish handshake...
 # XXX ADD ME (NOW, WE DON'T CHECK ANYTHING)
 # XXX XXX
-  if(version==0) {
+  if(version!=0) {
     if(.SOCK_POLL(s)>0)
       x = .SOCK_RECV(s, buf_size=16L, max_buffer_size=16)
   }
