@@ -220,23 +220,27 @@ create_server = function(
 {
   socks = c(server$server_socket,
     unlist(lapply(server$client_sockets,function(x) x$socket)))
-
+	
+  cat("<1>\n")
   if (length(socks)<1) return(invisible())
-
+  
+  cat("<2>\n")
   s = .SOCK_POLL(socks, timeout=timeout)
 
+  cat("<3>\n")
   # Loop handles three case:
   # 1. New client connections
   # 2. Client Web or Protocol Upgrade request
   # 3. Client Websocket Frame to read and respond to
   for (j in s){
-
+  
+    cat("<4>\n")
     # 1. New client connection on listening socket
     if (j==server$server_socket){
       .add_client(j,server)
       next
     }
-
+	cat("<5>\n")
     # Something to read from connected client
 
     # j holds just the socket file descriptor, or a negated descriptor
@@ -249,9 +253,13 @@ create_server = function(
       websocket_close(J)
       next
     }
+	
+	cat("<6>\n")
 
     # 2. Client Web or Protocol Upgrade request
     if (J$new) {
+	
+	  cat("<7>\n")
 
       J$new = FALSE
       J$wsinfo = .parse_header(.SOCK_RECV_HTTP_HEAD(j))
@@ -295,6 +303,7 @@ create_server = function(
       else 
         .SOCK_SEND(j,.v04_resp_101(J$wsinfo))
 
+      cat("<8>\n")
       # Trigger callback for newly-established connections
       if (is.function(server$established))
         server$established(WS=J)
