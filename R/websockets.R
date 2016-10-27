@@ -362,7 +362,7 @@ create_server = function(
   u = gsub("^.*://","",url)
   u = gsub("/.*","",u)
   uslash = paste(u, "/")
-  uescaped = gsub("\\\.", "\\\\\.", uslash)
+  uescaped = gsub("\\.", "\\\\.", uslash)
   ext = gsub("^.*://","",url)
   ext = gsub(uescaped,"",ext)
   h = paste("GET /", ext, " HTTP/1.1",sep="")
