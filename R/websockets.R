@@ -369,8 +369,6 @@ create_server = function(
   ur = paste("Host:",u)
   h = paste(h, ur, sep="\r\n")
   unoport = gsub(":.*","",u)
-  p = paste("Sec-WebSocket-Protocol:",subprotocol)
-  h = paste(h, p, sep="\r\n")
   if(version==0) {
 # This is so dumb.
     spaces1 = round(runif(1)*12)+1
@@ -425,6 +423,8 @@ create_server = function(
     h = paste(h, ver, sep="\r\n")
     k = paste("Sec-WebSocket-Key:",base64encode(nonce))
     h = paste(h, k, sep="\r\n")
+	p = paste("Sec-WebSocket-Protocol:",subprotocol)
+    h = paste(h, p, sep="\r\n")
     h = paste(h,"\r\n\r\n")
   }
 
