@@ -410,7 +410,7 @@ create_server = function(
     nkey[-idx] = key2
     key2 = paste(nkey,collapse="")
     key3 = as.raw(floor(runif(8)*256))
-	origin = paste("Origin: http://", u)
+	origin = paste("Origin: http://", u, sep="")
     h = paste(h, origin, sep="\r\n")
     k = paste("Sec-WebSocket-Key1:",key1)
     h = paste(h, k, sep="\r\n")
