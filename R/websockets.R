@@ -368,7 +368,7 @@ create_server = function(
   h = paste(h, "Connection: Upgrade", sep="\r\n")
   ur = paste("Host:",u)
   h = paste(h, ur, sep="\r\n")
-  u = gsub(":.*","",u)
+  unoport = gsub(":.*","",u)
   p = paste("Sec-WebSocket-Protocol:",subprotocol)
   h = paste(h, p, sep="\r\n")
   if(version==0) {
@@ -410,7 +410,8 @@ create_server = function(
     nkey[-idx] = key2
     key2 = paste(nkey,collapse="")
     key3 = as.raw(floor(runif(8)*256))
-    h = paste(h, "Origin: r", sep="\r\n")
+	origin = paste("Origin: http://", u)
+    h = paste(h, origin, sep="\r\n")
     k = paste("Sec-WebSocket-Key1:",key1)
     h = paste(h, k, sep="\r\n")
     k = paste("Sec-WebSocket-Key2:",key2)
@@ -428,7 +429,7 @@ create_server = function(
   }
 
   context = createContext(port, webpage=url, server=FALSE)
-  s = .SOCK_CONNECT (u, port)
+  s = .SOCK_CONNECT (unoport, port)
   if(s<1) {
     .SOCK_CLOSE(s)
     stop("Connection error")
