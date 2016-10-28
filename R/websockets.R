@@ -258,6 +258,9 @@ create_server = function(
 	    cat("<7>\n")
     
         J$new = FALSE
+		
+		# Update that this is not a new connection
+		server$client_sockets[[1]] = J
     
         cat("<8>\n")
         # Trigger callback for newly-established connections
@@ -275,6 +278,7 @@ create_server = function(
     
         if (length(frame)<1) {
         # Can't have an empty transmission, close the socket.
+		  cat("<00>\n")
           websocket_close(J)
           next
         }
