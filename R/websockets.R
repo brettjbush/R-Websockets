@@ -295,31 +295,31 @@ create_server = function(
     
       frame = .SOCK_RECV_FRAME(j) # Try the latest protocol
     
-      if (is.null(frame)){
-	    cat("<9>\n")
-        websocket_close(J)
-      } else if (frame$header$fin == 0){
-	    cat("<10>\n")
-        server$store_fragment(WS=J,frame)
-      } else if (frame$header$fin == 1){
-	    cat("<11>\n")
-        frame = server$coalesce_fragments(WS=J,frame)
-        if (frame$header$opcode %in% c(0,1,2) && is.function(server$receive)){
-		  cat("<12>\n")
-          server$receive(WS=J, DATA=frame$data, HEADER=frame$header)
-        } else if (frame$header$opcode == 8) {
-		  cat("<13>\n")
-          websocket_close(J)
-        } else if (frame$header$opcode == 9) {
-		  cat("<14>\n")
-          .websocket_pong(J,frame)
-        } else if (frame$header$opcode == 10) {
-		  cat("<15>\n")
-          .websocket_ping(J,frame)
-        } else {
-          # ignore frame
-        }
-      }
+      #if (is.null(frame)){
+	  #  cat("<9>\n")
+      #  websocket_close(J)
+      #} else if (frame$header$fin == 0){
+	  #  cat("<10>\n")
+      #  server$store_fragment(WS=J,frame)
+      #} else if (frame$header$fin == 1){
+	  #  cat("<11>\n")
+      #  frame = server$coalesce_fragments(WS=J,frame)
+      #  if (frame$header$opcode %in% c(0,1,2) && is.function(server$receive)){
+	#	  cat("<12>\n")
+      server$receive(WS=J, DATA=frame$data, HEADER=frame$header)
+      #  } else if (frame$header$opcode == 8) {
+	#	  cat("<13>\n")
+    #      websocket_close(J)
+    #    } else if (frame$header$opcode == 9) {
+#		  cat("<14>\n")
+#          .websocket_pong(J,frame)
+#        } else if (frame$header$opcode == 10) {
+#		  cat("<15>\n")
+#          .websocket_ping(J,frame)
+#        } else {
+#          # ignore frame
+#        }
+#      }
     }
   }
   # Server service check
