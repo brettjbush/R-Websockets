@@ -266,6 +266,7 @@ create_server = function(
 
       # Something wrong with client: close connection.
       if (is.null(J$wsinfo)) {
+	    cat("<8>\n")
         websocket_close(J)
         next
       }
@@ -278,7 +279,7 @@ create_server = function(
 
       # Stash this client's header, identifying websocket protocol version, 
       # etc. in the appropriate client_socket list
-      server$client_sockets[[as.character(j)]] = J
+      server$client_sockets[[1]] = J
 
       # Web request
       if (is.null(J$wsinfo$Upgrade)) {
@@ -289,6 +290,7 @@ create_server = function(
           # NOTE: CONNECTION REMAINS OPEN IF STATIC WEB SERVICE DOES NOT 
           # RETURN TRUE. We allow this case to pass connection on to
           # ancillary service, for example. 
+		  cat("<9>\n")
           if(server$static(j,J$wsinfo)) .remove_client(J)
 
         } else {
@@ -303,7 +305,7 @@ create_server = function(
       else 
         .SOCK_SEND(j,.v04_resp_101(J$wsinfo))
 
-      cat("<8>\n")
+      cat("<10>\n")
       # Trigger callback for newly-established connections
       if (is.function(server$established))
         server$established(WS=J)
