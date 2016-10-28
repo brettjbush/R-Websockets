@@ -246,7 +246,7 @@ create_server = function(
     # j holds just the socket file descriptor, or a negated descriptor
     # indicating an error condition. Retrieve the client socket from the
     # server environment in J.
-    J = server$client_sockets[[as.character(abs(j))]]
+    J = server$client_sockets[[1]]
 
     # Poll reports an error condition for this socket. Close it.
     if (j<0) {
