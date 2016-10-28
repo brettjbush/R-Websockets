@@ -271,33 +271,33 @@ create_server = function(
         next
       }
 
-      if (!is.null(J$wsinfo[["Sec-WebSocket-Version"]]) &&
-        (as.numeric(J$wsinfo[["Sec-WebSocket-Version"]])>=4) )
-        J$wsinfo$v = 4
-      else
-        J$wsinfo$v = 0
+      #if (!is.null(J$wsinfo[["Sec-WebSocket-Version"]]) &&
+      #  (as.numeric(J$wsinfo[["Sec-WebSocket-Version"]])>=4) )
+      #  J$wsinfo$v = 4
+      #else
+      #  J$wsinfo$v = 0
 
       # Stash this client's header, identifying websocket protocol version, 
       # etc. in the appropriate client_socket list
-      server$client_sockets[[1]] = J
+      #server$client_sockets[[1]] = J
 
       # Web request
-      if (is.null(J$wsinfo$Upgrade)) {
+      #if (is.null(J$wsinfo$Upgrade)) {
 
         # Not a handshake request, serve a static web page
-        if (is.function(server$static)) {
+      #  if (is.function(server$static)) {
 
           # NOTE: CONNECTION REMAINS OPEN IF STATIC WEB SERVICE DOES NOT 
           # RETURN TRUE. We allow this case to pass connection on to
           # ancillary service, for example. 
-		  cat("<9>\n")
-          if(server$static(j,J$wsinfo)) .remove_client(J)
+      #   cat("<9>\n")
+      #   if(server$static(j,J$wsinfo)) .remove_client(J)
 
-        } else {
-           .remove_client(J)
-        }
-        next
-      }
+      # } else {
+      #    .remove_client(J)
+      # }
+      # next
+     #}
 
       # Protocol Upgrade: negotiate a websocket connection
       if (J$wsinfo$v<4)
