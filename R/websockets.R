@@ -47,7 +47,6 @@ websocket_write = function(DATA, WS)
   else
     j = .SOCK_SEND(WS$socket,raw(1))
   if(j<0) {
-    cat("Made it here\n")
     websocket_close(WS)
     return(j)
   }
@@ -219,9 +218,9 @@ create_server = function(
 # with old package versions.
 `service` = function(context, timeout=1000L, server=context)
 {
-  socks = c(server$server_socket,
-    unlist(lapply(server$client_sockets,function(x) x$socket)))
-	
+  #socks = c(server$server_socket,
+  #  unlist(lapply(server$client_sockets,function(x) x$socket)))
+  socks = c(server$client_sockets[[1]])	
   cat("<1>\n")
   if (length(socks)<1) return(invisible())
   
