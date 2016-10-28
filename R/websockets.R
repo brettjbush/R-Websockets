@@ -47,6 +47,7 @@ websocket_write = function(DATA, WS)
   else
     j = .SOCK_SEND(WS$socket,raw(1))
   if(j<0) {
+    cat("Made it here\n")
     websocket_close(WS)
     return(j)
   }
