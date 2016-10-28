@@ -262,7 +262,7 @@ create_server = function(
 	  cat("<7>\n")
 
       J$new = FALSE
-      J$wsinfo = .parse_header(.SOCK_RECV_HTTP_HEAD(j))
+      #J$wsinfo = .parse_header(.SOCK_RECV_HTTP_HEAD(j))
 
       # Something wrong with client: close connection.
       if (is.null(J$wsinfo)) {
