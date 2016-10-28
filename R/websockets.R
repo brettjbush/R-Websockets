@@ -460,7 +460,7 @@ create_server = function(
     if(.SOCK_POLL(s)>0)
       x = .SOCK_RECV(s, buf_size=16L, max_buffer_size=16)
   }
-  context$client_sockets[[as.character(s)]] = 
+  context$client_sockets[[1]] = 
     list(socket=s, wsinfo=list(v=version), server=context, new=TRUE)
   context
 }
