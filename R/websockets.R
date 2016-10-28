@@ -220,7 +220,7 @@ create_server = function(
 {
   #socks = c(server$server_socket,
   #  unlist(lapply(server$client_sockets,function(x) x$socket)))
-  socks = c(server$client_sockets[[1]])	
+  socks = c(server$client_sockets[[1]]$socket)	
   cat("<1>\n")
   if (length(socks)<1) return(invisible())
   
