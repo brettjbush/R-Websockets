@@ -25,7 +25,7 @@ websocket_write = function(DATA, WS)
   }
   if(is.character(DATA)) DATA=charToRaw(DATA)
   if(!is.raw(DATA)) stop("DATA must be character or raw")
-  if(v>=4){
+  if(v==4){
     #j =.SOCK_SEND(WS$socket,.frame(length(DATA),mask=mask,
     #                                opcode=(if (WS$server$is.binary) { 2L } else { 1L })))
      frame = .frame(length(DATA),mask=mask, opcode=(if (WS$server$is.binary) { 2L } else { 1L }))
