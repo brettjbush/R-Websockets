@@ -43,9 +43,9 @@ websocket_write = function(DATA, WS)
     return(j)
   }
   if (WS$server$is.binary)
-    j = .SOCK_SEND(WS$socket,raw(2))
+    #j = .SOCK_SEND(WS$socket,raw(2))
   else
-    j = .SOCK_SEND(WS$socket,raw(1))
+    #j = .SOCK_SEND(WS$socket,raw(1))
   if(j<0) {
     websocket_close(WS)
     return(j)
