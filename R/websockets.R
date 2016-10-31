@@ -50,9 +50,9 @@ websocket_write = function(DATA, WS)
     websocket_close(WS)
     return(j)
   }
-  cat("Made it!\n")
-  .SOCK_SEND(WS$socket,DATA)
-  .SOCK_SEND(WS$socket,packBits(intToBits(255))[1])
+  #cat("Made it!\n")
+  #.SOCK_SEND(WS$socket,DATA)
+  #.SOCK_SEND(WS$socket,packBits(intToBits(255))[1])
 }
 
 # "Broadcast" data to all the client websockets attached to the server.
