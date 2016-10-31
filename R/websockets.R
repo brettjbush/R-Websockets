@@ -222,14 +222,14 @@ create_server = function(
   # Client service check
   if(is.null(context$server)) {
     socks = c(context$client_sockets[[1]]$socket)
-	cat("CLIENT\n")
-    cat("<1>\n")
+	#cat("CLIENT\n")
+    #cat("<1>\n")
     if (length(socks)<1) return(invisible())
     
-    cat("<2>\n")
+    #cat("<2>\n")
     s = .SOCK_POLL(socks, timeout=timeout)
     
-    cat("<3>\n")
+    #cat("<3>\n")
     # Loop handles three case:
     # 1. New client connections
     # 2. Client Web or Protocol Upgrade request
