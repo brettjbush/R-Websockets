@@ -33,13 +33,13 @@ websocket_write = function(DATA, WS)
       key = as.raw(floor(runif(4)*256))
       #j = .SOCK_SEND(WS$socket, key)
       mask = .MASK(DATA,key)
+	  cat("<SEND>\n")
+	  j = .SOCK_SEND(WS$socket, c(frame,key,mask))
     } else {
        key = raw(0)
        mask = raw(0)
+	   j = .SOCK_SEND(WS$socket, c(frame,key,mask,DATA))
     }
-	cat("<SEND>\n")
-    j = .SOCK_SEND(WS$socket, c(frame,key,mask,DATA))
-
     if(j<0) websocket_close(WS)
     return(j)
   }
