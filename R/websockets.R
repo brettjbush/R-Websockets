@@ -301,12 +301,13 @@ create_server = function(
     
       frame = .SOCK_RECV_FRAME(j) # Try the latest protocol
     
-      if (is.null(frame)){
-	    cat("<9>\n")
-		next
-        #websocket_close(J)
-      } else if (frame$header$fin == 0){
-	    cat("<10>\n")
+      #if (is.null(frame)){
+	  #  cat("<9>\n")
+	#	next
+    #    #websocket_close(J)
+    #  } else if (frame$header$fin == 0){
+	  if (frame$header$fin == 0) {
+        cat("<10>\n")
         server$store_fragment(WS=J,frame)
       } else if (frame$header$fin == 1){
 	    cat("<11>\n")
