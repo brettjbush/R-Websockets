@@ -33,7 +33,6 @@ websocket_write = function(DATA, WS)
       key = as.raw(floor(runif(4)*256))
       #j = .SOCK_SEND(WS$socket, key)
       mask = .MASK(DATA,key)
-	  cat("<SEND>\n")
 	  j = .SOCK_SEND(WS$socket, c(frame,key,mask))
     } else {
        key = raw(0)
@@ -44,18 +43,15 @@ websocket_write = function(DATA, WS)
     return(j)
   }
   if (WS$server$is.binary) {
-    cat("<A>")
     j = .SOCK_SEND(WS$socket,raw(2))
   }
   else {
-    cat("<B>")
     j = .SOCK_SEND(WS$socket,raw(1))
   }
   if(j<0) {
     websocket_close(WS)
     return(j)
   }
-  cat("<C>\n")
   .SOCK_SEND(WS$socket,DATA)
   .SOCK_SEND(WS$socket,packBits(intToBits(255))[1])
 }
@@ -227,22 +223,16 @@ create_server = function(
   # Client service check
   if(is.null(context$server)) {
     socks = c(context$client_sockets[[1]]$socket)
-	#cat("CLIENT\n")
-    #cat("<1>\n")
     if (length(socks)<1) return(invisible())
     
-    #cat("<2>\n")
     s = .SOCK_POLL(socks, timeout=timeout)
-    
-    #cat("<3>\n")
+
     # Loop handles three case:
     # 1. New client connections
     # 2. Client Web or Protocol Upgrade request
     # 3. Client Websocket Frame to read and respond to
     for (j in s){
-    
-      cat("<4>\n")
-	  cat("<5>\n")
+
       # Something to read from connected client
     
       # j holds just the socket file descriptor, or a negated descriptor
@@ -255,20 +245,15 @@ create_server = function(
         websocket_close(J)
         next
       }
-	  
-	  cat("<6>\n")
     
       # 2. Client Web or Protocol Upgrade request
       if (J$new) {
-	  
-	    cat("<7>\n")
     
         J$new = FALSE
 		
 		# Update that this is not a new connection
 		server$client_sockets[[1]] = J
-    
-        cat("<8>\n")
+
         # Trigger callback for newly-established connections
         if (is.function(server$established))
           server$established(WS=J)
@@ -284,7 +269,6 @@ create_server = function(
     
         if (length(frame)<1) {
         # Can't have an empty transmission, close the socket.
-		  cat("<00>\n")
           websocket_close(J)
           next
         }
@@ -302,27 +286,20 @@ create_server = function(
       frame = .SOCK_RECV_FRAME(j) # Try the latest protocol
     
       if (is.null(frame)){
-	    cat("<9>\n")
 		server$receive(WS=J, DATA=charToRaw(""), HEADER=0)
 		next
         #websocket_close(J)
       } else if (frame$header$fin == 0){
-	    cat("<10>\n")
         server$store_fragment(WS=J,frame)
       } else if (frame$header$fin == 1){
-	    cat("<11>\n")
         frame = server$coalesce_fragments(WS=J,frame)
         if (frame$header$opcode %in% c(0,1,2) && is.function(server$receive)){
-		  cat("<12>\n")
           server$receive(WS=J, DATA=frame$data, HEADER=frame$header)
         } else if (frame$header$opcode == 8) {
-		  cat("<13>\n")
           websocket_close(J)
         } else if (frame$header$opcode == 9) {
-		  cat("<14>\n")
           .websocket_pong(J,frame)
         } else if (frame$header$opcode == 10) {
-		  cat("<15>\n")
           .websocket_ping(J,frame)
         } else {
           # ignore frame
@@ -334,27 +311,22 @@ create_server = function(
   else {
     socks = c(server$server_socket,
     unlist(lapply(server$client_sockets,function(x) x$socket)))
-	
-    cat("<1>\n")
+
     if (length(socks)<1) return(invisible())
     
-    cat("<2>\n")
     s = .SOCK_POLL(socks, timeout=timeout)
-    
-    cat("<3>\n")
+
     # Loop handles three case:
     # 1. New client connections
     # 2. Client Web or Protocol Upgrade request
     # 3. Client Websocket Frame to read and respond to
     for (j in s){
-    
-      cat("<4>\n")
+
       # 1. New client connection on listening socket
       if (j==server$server_socket){
         .add_client(j,server)
         next
       }
-	  cat("<5>\n")
       # Something to read from connected client
     
       # j holds just the socket file descriptor, or a negated descriptor
@@ -367,13 +339,9 @@ create_server = function(
         websocket_close(J)
         next
       }
-	  
-	  cat("<6>\n")
     
       # 2. Client Web or Protocol Upgrade request
       if (J$new) {
-	  
-	    cat("<7>\n")
     
         J$new = FALSE
         J$wsinfo = .parse_header(.SOCK_RECV_HTTP_HEAD(j))
@@ -416,8 +384,7 @@ create_server = function(
           .SOCK_SEND(j,.v00_resp_101(J$wsinfo, j))
         else 
           .SOCK_SEND(j,.v04_resp_101(J$wsinfo))
-    
-        cat("<8>\n")
+
         # Trigger callback for newly-established connections
         if (is.function(server$established))
           server$established(WS=J)
