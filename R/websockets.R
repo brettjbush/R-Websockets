@@ -303,7 +303,8 @@ create_server = function(
     
       if (is.null(frame)){
 	    cat("<9>\n")
-        websocket_close(J)
+		next
+        #websocket_close(J)
       } else if (frame$header$fin == 0){
 	    cat("<10>\n")
         server$store_fragment(WS=J,frame)
