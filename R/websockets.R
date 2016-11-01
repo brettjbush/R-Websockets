@@ -303,7 +303,7 @@ create_server = function(
     
       if (is.null(frame)){
 	    cat("<9>\n")
-		server$receive(WS=J, DATA=0, HEADER=0)
+		server$receive(WS=J, DATA=charToRaw(""), HEADER=0)
 		next
         #websocket_close(J)
       } else if (frame$header$fin == 0){
