@@ -446,7 +446,7 @@ create_server = function(
 # 3. Connect to the server and establish
 #    websocket or fail.
 # Use the same callback functions as with server.
-`websocket` = function(url,port=80,subprotocol="chat", version=0)
+`websocket` = function(url,port=80,subprotocol="chat", headers= NULL, version=0)
 {
   nonce = as.raw(replicate(16,floor(runif(1)*256)))
   u = gsub("^.*://","",url)
@@ -458,9 +458,14 @@ create_server = function(
   h = paste(h, "Connection: Upgrade", sep="\r\n")
   ur = paste("Host:",u)
   h = paste(h, ur, sep="\r\n")
+  if(!is.null(headers)) {
+    for(header in headers){
+	  header_line = paste(header[[1]],": ",header[[2]], sep="")
+	  h = paste(h,header_line,"\r\n")
+	}
+  }
   unoport = gsub(":.*","",u)
   if(version==0) {
-# This is so dumb.
     spaces1 = round(runif(1)*12)+1
     spaces2 = round(runif(1)*12)+1
     max1 = 4294967295/spaces1
