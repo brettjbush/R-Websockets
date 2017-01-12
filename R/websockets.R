@@ -461,7 +461,7 @@ create_server = function(
   if(!is.null(headers)) {
     for(header in headers){
 	  header_line = paste(header[[1]],": ",header[[2]], sep="")
-	  h = paste(h,header_line,"\r\n")
+	  h = paste(h,header_line, sep="\r\n")
 	}
   }
   unoport = gsub(":.*","",u)
