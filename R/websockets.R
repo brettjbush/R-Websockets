@@ -222,23 +222,32 @@ create_server = function(
 {
   # Client service check
   if(is.null(context$server)) {
+
+    # Get websocket descriptor
+    J = server$client_sockets[[1]]
+      
+    # If this connection is new, call 'established' now.
+    if (J$new) {
+
+      J$new = FALSE
+
+      # Update that this is not a new connection
+      server$client_sockets[[1]] = J
+
+      # Trigger callback for newly-established connections
+      if (is.function(server$established))
+        server$established(WS=J)
+    } 
+
     socks = c(context$client_sockets[[1]]$socket)
     if (length(socks)<1) return(invisible())
     
     s = .SOCK_POLL(socks, timeout=timeout)
 
-    # Loop handles three case:
-    # 1. New client connections
-    # 2. Client Web or Protocol Upgrade request
-    # 3. Client Websocket Frame to read and respond to
+    # Read and respond to frames from websocket
     for (j in s){
 
       # Something to read from connected client
-    
-      # j holds just the socket file descriptor, or a negated descriptor
-      # indicating an error condition. Retrieve the client socket from the
-      # server environment in J.
-      J = server$client_sockets[[1]]
     
       # Poll reports an error condition for this socket. Close it.
       if (j<0) {
@@ -246,22 +255,7 @@ create_server = function(
         next
       }
     
-      # 2. Client Web or Protocol Upgrade request
-      if (J$new) {
-    
-        J$new = FALSE
-		
-		# Update that this is not a new connection
-		server$client_sockets[[1]] = J
 
-        # Trigger callback for newly-established connections
-        if (is.function(server$established))
-          server$established(WS=J)
-        next
-      } 
-      
-      # 3. Client Websocket Frame to read and respond to
-    
       # 3.1 Old Protocol
     
       if (J$wsinfo$v < 4) {
